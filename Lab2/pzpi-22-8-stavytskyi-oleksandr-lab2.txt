@@ -1,1 +1,232 @@
+МІНІСТЕРСТВО ОСВІТИ І НАУКИ УКРАЇНИ
+ХАРКІВСЬКИЙ НАЦІОНАЛЬНИЙ УНІВЕРСИТЕТ РАДІОЕЛЕКТРОНІКИ
 
+Кафедра «Програмної інженерії»
+
+
+
+
+
+
+ЗВІТ
+З Лабораторної роботи № 2
+з дисципліни
+«Архітектура програмного забезпечення»
+
+
+
+
+
+Виконав
+ст. гр. ПЗПІ-22-8
+Ставицький Олександр
+Перевірив
+ст. викладач каф. ПІ
+Сокорчук І. П.
+
+
+
+
+Харків 2025
+1 ІСТОРІЯ ЗМІН
+
+	У цьому розділі відображено історію внесених змін до звіту, що наведено у табл. 1.
+
+	Таблиця 1 – Історія змін
+№
+Дата
+Версія
+Опис змін
+Автор
+1
+19.05.2025
+0.1
+Створено розділ «Завдання»
+Ставицький Олександр
+2
+19.05.2025
+0.1
+Створено розділ «Опис виконаної роботи»
+Ставицький Олександр
+3
+19.05.2025
+0.1
+Створено розділ «Висновки»
+Ставицький Олександр
+2 ЗАВДАННЯ
+
+	У рамках виконання цієї лабораторної роботи треба було розробити серверну частину для програмної системи відповідно до обраної теми. Необхідно проаналізувати та описати створені компоненти системи.
+
+3 ОПИС ВИКОНАНОЇ РОБОТИ
+     3.1 Покращення бази даних
+     
+     Спочатку була покращена база даних. Нову ER-діаграму можна побачити на рис. 3.1.
+     
+     Рис. 3.1 – ER-діаграма
+     
+     3.2 Розробка Use Case діаграми
+     	
+     Була розроблена Use Case діаграми (див. рис. 3.2). 
+     Головний адміністратор повністю керує програмною системою, це найвижча роль в системі.
+	Адміністратори парковок призначені головним адміністратором керують своїми власними парковками, та мають доступ до своїх парковок.
+	ІоТ пристрої оновлюють достуність місця.
+	Звичайний користувач може шукати вільні та зайняті паркувальні місця до яких він має доступ.
+
+Рис. 3.2 – Use Case
+
+	3.3 Розробка UML діаграми розгортання
+
+	Була розроблена UML діаграма розгортання (див. Рис. 3.3). Мобільний пристрій та веб-сайт отримують дані від серверу. ІоТ пристрій через MQTT брокера також передає дані до серверу. А сервер в свою чергу все взаємодіє з базою даних. 
+
+Рис. 3.3 – діаграма розгортання
+
+	3.4 Розробка діяльності
+
+	Була розроблена діаграма діяльності (див. рис. 3.4). На діаграмі представлено діяльність ІоТ пристрою, математики, бекапу бази даних та пошуку паркувальних місць.
+
+
+Рис. 3.4 – діаграма діяльності
+
+     3.5 Компоненти серверної частини
+     
+     Серверна частина програмної системи для управління паркуванням має такі компоненти:
+     * User – для керування користувачами;
+     * UserGroup – для керування групами користувачів;
+     * UserGroupMember – для керування доступу користувачів до груп;
+     * Parking – для керування парковками;
+     * ParkingGroup – для керування групами паркувальних місць;
+     * ParkingSpot – для керування паркувальними місцями;
+     * ParkingAdmin – для керування адмінами парковок;
+     * IoTDevice – для керування ІоТ пристроями;
+     * UserGroupParkingGroupAccess – для керування доступу груп користувачів до груп паркувальних місць;
+     * ParkingHistory – для керування історією зайнятості місць;
+     * parking-stats – для керування матиматикою.
+
+
+     4 ВИСНОВКИ
+
+	Під час виконання цієї лабораторної роботи було розроблено серверну частину для програмної системи відповідно до обраної теми.
+
+
+Додаток А
+
+	Посилання на відеозапис доповіді та хронологічний опис.
+Відеозапис доповіді на YouTube: https://youtu.be/fum8w5lqHu4 
+     Хронологічний опис:
+     00:00 - початок 
+     00:23 - запуск серверу 
+     00:39 - реєстрація 
+     01:40 - авторизація 
+     02:02 - створення парковки 
+     02:15 - створення групи паркувальних місць 
+     02:26 - створення паркувальних місць 
+     02:38 - створення ІоТ пристрою 
+     03:05 - створення групи користувачів 
+     03:25 - додавання користувача до групи 
+     03:35 - групи користувачів + групи паркувальних місць 
+     03:45 - пошук вільних місць 
+     05:36 - загруженість парковки 
+     06:51 - середній час паркування 
+     07:23 - бекап бази даних 
+     07:43 - кінець
+
+
+
+Додаток Б
+Програмий код
+
+Код для математичної частини:
+
+const express = require('express');
+const router = express.Router();
+const ParkingHistory = require('../models/ParkingHistory');
+const restrictTo = require('../middleware/restrictTo');
+
+router.get('/:parking_id/occupancy', restrictTo('super_admin', 'parking_admin'), async (req, res) => {
+  const { parking_id } = req.params;
+  const { start_time, end_time } = req.query;
+
+  try {
+    const history = await ParkingHistory.findByParkingId(parking_id, start_time, end_time);
+
+    const totalRecords = history.length;
+    const occupiedRecords = history.filter(record => record.is_occupied).length;
+    const occupancyRate = totalRecords > 0 ? (occupiedRecords / totalRecords) * 100 : 0;
+
+    res.json({ occupancy_rate: occupancyRate.toFixed(2) + '%' });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to calculate occupancy rate' });
+  }
+});
+
+router.get('/:parking_id/average-duration', restrictTo('super_admin', 'parking_admin'), async (req, res) => {
+  const { parking_id } = req.params;
+  const { start_time, end_time } = req.query;
+
+  try {
+    const history = await ParkingHistory.findByParkingId(parking_id, start_time, end_time);
+    const durations = history.filter(record => record.duration_seconds).map(record => record.duration_seconds);
+
+    const averageDuration = durations.length > 0
+      ? durations.reduce((sum, duration) => sum + duration, 0) / durations.length
+      : 0;
+
+    res.json({ average_duration_seconds: averageDuration.toFixed(2) });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to calculate average duration' });
+  }
+});
+
+module.exports = router;
+Код для створення бекапу:
+
+const express = require('express');
+const router = express.Router();
+const { exec } = require('child_process');
+const path = require('path');
+const fs = require('fs');
+const dotenv = require('dotenv');
+const restrictTo = require('../middleware/restrictTo');
+
+dotenv.config();
+
+router.post('/backup', restrictTo('super_admin'), async (req, res) => {
+  const dbUrl = process.env.DATABASE_URL;
+  if (!dbUrl) {
+    return res.status(500).json({ error: 'DATABASE_URL is not configured' });
+  }
+
+  const backupDir = path.join(__dirname, '../backups');
+  const timestamp = Date.now();
+  const backupFileName = `backup_${timestamp}.backup`;
+  const backupFilePath = path.join(backupDir, backupFileName);
+
+  try {
+    if (!fs.existsSync(backupDir)) {
+      fs.mkdirSync(backupDir, { recursive: true });
+    }
+
+    const cmd = `pg_dump --format=custom --file="${backupFilePath}" "${dbUrl}"`;
+
+    exec(cmd, (error, stdout, stderr) => {
+      if (error) {
+        console.error('pg_dump error:', stderr);
+        return res.status(500).json({ error: 'Failed to create backup' });
+      }
+
+      console.log('Backup created at:', backupFilePath);
+
+      res.status(200).json({
+        message: 'Backup created successfully',
+        filePath: backupFilePath,
+        fileName: backupFileName,
+      });
+    });
+
+  } catch (error) {
+    console.error('Backup error:', error);
+    return res.status(500).json({ error: 'Unexpected server error during backup' });
+  }
+});
+
+module.exports = router;
