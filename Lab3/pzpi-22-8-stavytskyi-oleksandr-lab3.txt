@@ -127,6 +127,8 @@
 ДОДАТОК В
 Програмний код авторизації веб частини
 
+GitHub репозиторій: https://github.com/NureStavytskyiOleksandr/apz-pzpi-22-8-stavytskyi-oleksandr/blob/main/Lab3/pzpi-22-8-stavytskyi-oleksandr-lab3/js/auth.js 
+
 
 const API_BASE_URL = 'http://localhost:3000';
 
