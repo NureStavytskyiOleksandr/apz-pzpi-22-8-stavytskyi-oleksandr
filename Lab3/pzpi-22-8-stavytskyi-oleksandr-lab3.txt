@@ -127,6 +127,7 @@
 ДОДАТОК В
 Програмний код авторизації веб частини
 
+В.1 Авторизація
 GitHub репозиторій: https://github.com/NureStavytskyiOleksandr/apz-pzpi-22-8-stavytskyi-oleksandr/blob/main/Lab3/pzpi-22-8-stavytskyi-oleksandr-lab3/js/auth.js 
 
 
