@@ -1,14 +1,19 @@
-	МІНІСТЕРСТВО ОСВІТИ І НАУКИ УКРАЇНИ
+МІНІСТЕРСТВО ОСВІТИ І НАУКИ УКРАЇНИ
 ХАРКІВСЬКИЙ НАЦІОНАЛЬНИЙ УНІВЕРСИТЕТ РАДІОЕЛЕКТРОНІКИ
 
 Кафедра «Програмної інженерії»
 
 
 
+
+
+
 ЗВІТ
 З Лабораторної роботи № 5
 з дисципліни
-«Аналіз та рефакторинг коду»
+«Архітектура програмного забезпечення»
+
+
 
 
 
@@ -22,91 +27,194 @@
 
 
 
-Харків 2024
-1 ВСТУП
-1.1 Тема
+Харків 2025
+1 ІСТОРІЯ ЗМІН
 
-     Розгортання програмної системи та демонстрація її роботи.
+	У цьому розділі відображено історію внесених змін до звіту, що наведено у табл. 1.
 
-1.2 Мета
+	Таблиця 1 – Історія змін
+№
+Дата
+Версія
+Опис змін
+Автор
+1
+31.05.2025
+0.1
+Створено розділ «Завдання»
+Ставицький Олександр
+2
+31.05.2025
+0.1
+Створено розділ «Опис виконаної роботи»
+Ставицький Олександр
+3
+31.05.2025
+0.1
+Створено розділ «Висновки»
+Ставицький Олександр
+2 ЗАВДАННЯ
 
-     Розгорнути програму систему та продемонструвати її роботу.
+	Мета завдання – розгорнути повноцінний стек програмної системи та продемонструвати її роботу в усіх компонентах: серверній частині, веб-інтерфейсі, мобільному додатку та IoT-пристрої. Продемонструвати, що всі частини системи працюють узгоджено, забезпечуючи ефективне управління паркуванням. 
+
+3 ОПИС ВИКОНАНОЇ РОБОТИ
+
+     Програмна система побудована на основі багаторівневої архітектури: серверна частина реалізована на JavaScript із використанням фреймворка Node.js та Express, а для зберігання даних застосовується реляційна база даних PostgreSQL. Для обміну даними з IoT-пристроями використовується MQTT-брокер і платформа ESP32, яка зчитує показники температури, вологості та рівня кисню. Веб-інтерфейс розроблено з використанням HTML і CSS із підтримкою адаптивного дизайну, а клієнтська логіка написана на чистому JavaScript без додаткових фреймворків. Мобільний додаток створено на Kotlin із використанням Jetpack Compose. Завдяки такому поєднанню технологій система забезпечує ефективну роботу всіх компонентів у єдиному інформаційному просторі.
+     Серверна частина розроблена на JavaScript з використанням Node.js і фреймворка Express, що дозволяє швидко налаштувати проєкт, забезпечити високу продуктивність і легке масштабування. Логіка реалізована за архітектурним підходом REST API, де кожен ендпоінт обробляється окремим маршрутом у файлах routes, а для обробки запитів використовуються асинхронні функції (async/await) для забезпечення швидкості та ефективності. Наприклад, маршрути для парковок (/parkings) і паркувальних місць (/parking-spots) визначені в окремих файлах, таких як routes/parkings.js і routes/parking-spots.js, а авторизація реалізована через middleware (restrictTo) на основі JWT.
+     Для зберігання даних використовується реляційна база PostgreSQL, що підтримує стандарт SQL і ефективно працює з великими обсягами інформації. Підключення до бази даних налаштовується через бібліотеку pg (Node.js PostgreSQL client), а параметри підключення визначаються в централізованому файлі конфігурації. Взаємодія з базою здійснюється через об’єкти-моделі (models/Parking.js, models/ParkingSpot.js), які містять методи для виконання CRUD-операцій (findAll, findById, create, update, delete) із використанням SQL-запитів. Складні запити, такі як вибірка доступних місць для користувача, реалізуються через параметризовані запити для уникнення SQL-ін’єкцій.
+     Інтеграція з IoT-підсистемою забезпечує безперервний моніторинг і передачу даних про стан паркувальних місць із зовнішніх пристроїв. ESP32 використовується як центральний контролер, до якого підключено ультразвуковий датчик відстані HC-SR04 для вимірювання відстані до об’єктів, а також світлодіоди (зелений на піні 18 і червоний на піні 19) для візуальної індикації статусу місця. ESP32 виконує код, написаний на Arduino C/C++, який ініціалізує підключення до Wi-Fi і MQTT-брокера.
+     Веб-інтерфейс розроблено на основі HTML і CSS із використанням чистого JavaScript для клієнтської логіки. Сторінки реалізовані як окремі HTML-файли, а стилізація забезпечена через CSS. Для асинхронних запитів до REST API використовується вбудована функція fetch. Інтернаціоналізація реалізована через створення JSON-файлів із перекладами і використання JavaScript для завантаження відповідного перекладу на основі обраної мови користувача, яка зберігається в localStorage.
+     Мобільний додаток розроблено на Kotlin із використанням Jetpack Compose, що забезпечує декларативний підхід до побудови UI та мінімізує шаблонний код. Для мережевої взаємодії використано Retrofit із OkHttp, що дозволяє легко налаштовувати запити та обробляти відповіді в JSON.
+Локальне зберігання даних здійснюється через SharedPreferences, що забезпечує збереження критичних даних у офлайн-режимі. Інтернаціоналізація реалізована через ресурси рядків у strings.xml, із підтримкою англійської (values/strings.xml) та української (values-uk/strings.xml) мов, а перемикання мови виконується через зміну Locale та оновлення конфігурації додатка, як це вже реалізовано у вашому коді (наприклад, у MainActivity.kt).
+     Система забезпечує злагоджену роботу всіх компонентів завдяки чіткому розподілу обов’язків: серверна частина на Node.js/Express обробляє запити від веб і мобільних клієнтів, а також приймає дані з IoT через MQTT. Веб-інтерфейс на HTML/CSS/JavaScript надає простий і адаптивний доступ до даних. Мобільний додаток на Kotlin із Jetpack Compose забезпечує зручний інтерфейс для користувачів із підтримкою офлайн-режиму та інтернаціоналізації. PostgreSQL виступає єдиним джерелом даних, забезпечуючи цілісність і надійність інформації.
+     4 ВИСНОВКИ
      
-2 РОЗГОРТАННЯ ПРОГРАМНОЇ СИСТЕМИ
-2.1 База даних
-	
-	Для зберігання та обробки даних системи було використано базу даних PostgreSQL. Ця база даних забезпечує надійність, високу продуктивність і зручність у роботі з великими обсягами структурованих даних.
-	Для адміністрування бази даних було використано інструмент pgAdmin, який забезпечує зручний графічний інтерфейс для створення, редагування, моніторингу таблиць і виконання SQL запитів.
+     Протягом проекту виконано повний цикл розробки: здійснено аналіз вимог до системи, спроектовано багаторівневу архітектуру та реалізовано кожний компонент — від серверного до веб-клієнта, мобільного додатку, а також IoT-підсистеми. Запроваджено механізми інтернаціоналізації, захисту даних, бекап бази даних, що забезпечило стабільність і масштабованість рішення. В результаті створена єдина інформаційна платформа, здатна в режимі реального часу збирати, обробляти й відображати дані про парковки, що задовольняє поставлені завдання.
+     
 
-2.2 Серверна частина
-
-	Серверна частина програмної системи реалізована на Node.js. Node.js. забезпечує високу продуктивність, що дозволяє обробляти багато запитів від клієнтів.
-	Для створення АРІ використовувалися функції написані на JavaScript, які забезпечують обробку HTTPS запитів, взаємодію з базою даних та ІоТ пристроями, а також для керування бізнес логікою системи.
-	Для документування та тестування АРІ використовувався Swagger. Цей інструмент полегшив тестування запитів і зробив АРІ зручним.
-
-2.3 ІоТ пристрій
-	
-	ІоТ пристрій відіграє ключову роль в цій системі. Ультразвуковий датчик, підключений до контролера, використовується для визначення наявності автомобіля на певному паркувальному місці.
-
-2.4 Додаткові інструменти
-
-	Для розробки програмного забезпечення використовувався редактор коду Visual Studio Code. Цей інструмент забезпечив зручне  середовище для написання коду на JavaScript та управління проектом.
-	Також був використаний Git. Це зручна та гнучка система для контролю версій проекту.
-
-2.5 Розгортання
-
-	Для розгортання програмної системи мають бути встановлені модулі: Node.js для роботи серверу, Bcrypt для хешування паролів, Swagger для інтерактивної документації, файли functions.js функціями програми та server.js з самим сервером. Для створення бази даних має бути встановлена PostgreSQL та інструмент роботи з базою pgAdmin 4. Щоб створити таблиці бази баних потрібно вписати наданий в Додатку А SQL запит. Після чого ви розставляєте правильно налаштовані ІоТ пристрої, кожен пристрій має мати свій id. Після чого ви запускаєте сервер з файлу server.js, а також запускаєте ІоТ пристрої, які будуть передавати інформацію до бази.
-3 ВИСНОВОК
-
-	Поєднання потужної бази даних PostgreSQL, зручного інтерфейсу pgAdmin, продуктивного серверного середовища Node.js, інтерактивної документації Swagger та точних вимірювань ІоТ пристрою дозволило створити ефективну програмне систему для управління паркуванням.
-
-     Посилання на відео: https://youtu.be/E2EPbqHC9uo 
 
 ДОДАТОК А
+
+	Посилання на відеозапис доповіді та хронологічний опис.
+Відеозапис доповіді на YouTube: https://youtu.be/0ibvNCBO-Aw 
+     Хронологічний опис:
+     00:00 - початок 
+     00:11 - база даних 
+     00:34 - сервер 
+     01:11 - фронтенд 
+     01:35 - функціонал супер адміна 
+     03:00 - функціонал адміна парковок 
+     05:25 - мобільний додаток 
+     07:48 - ІоТ пристрій 
+     08:55 - кінець
      
-     
-     CREATE TABLE user_groups (
-     	user_group_id SERIAL PRIMARY KEY,
-     	user_group_name VARCHAR(255) NOT NULL,
-     	user_group_description TEXT
-     );
-     	
-     CREATE TABLE users (
-     	user_id SERIAL PRIMARY KEY,
-     	username VARCHAR(255) NOT NULL,
-     	password VARCHAR(255) NOT NULL,
-     	user_group_id INTEGER,
-     	FOREIGN KEY (user_group_id) REFERENCES user_groups(user_group_id)
-     );
-     	
-     CREATE TABLE parking_groups (
-     	parking_group_id SERIAL PRIMARY KEY,
-     	parking_group_name VARCHAR(255) NOT NULL,
-     	parking_group_description TEXT,
-     	user_group_id INTEGER,
-     	FOREIGN KEY (user_group_id) REFERENCES user_groups(user_group_id)
-     );
-     	
-     CREATE TABLE parking_spots (
-     	parking_spot_id SERIAL PRIMARY KEY,
-     	spot_number VARCHAR(255) NOT NULL,
-     	sensor_id VARCHAR(255) NOT NULL,
-     	spot_status BOOLEAN NOT NULL,
-     	parking_group_id INTEGER,
-     	FOREIGN KEY (parking_group_id) REFERENCES parking_groups(parking_group_id)
-     );
-     	
-     CREATE TABLE bookings (
-     	booking_id SERIAL PRIMARY KEY,
-     	user_id INTEGER,
-     	parking_spot_id INTEGER,
-     	start_time TIMESTAMP NOT NULL,
-     	end_time TIMESTAMP NOT NULL,
-     	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-     	FOREIGN KEY (user_id) REFERENCES users(user_id),
-     	FOREIGN KEY (parking_spot_id) REFERENCES parking_spots(parking_spot_id)
-     );
 
 
-6
+ДОДАТОК Б
+Специфікація
 
+1 Загальний огляд
+Технології:
+* Сервер: Node.js, Express, PostgreSQL, mqtt
+* Веб-інтерфейс: HTML, CSS, JavaScript
+* Мобільний додаток: Kotlin, Jetpack Compose
+* IoT: ESP32, HC-SR04, MQTT
+2 Технічні деталі
+2.1 Серверна частина
+Технології: Node.js (v18+), Express (v4+), pg (PostgreSQL client), mqtt
+Структура: 
+* server.js: Основний файл сервера.
+* routes/: Файли маршрутів (наприклад, parkings.js, parking-spots.js).
+* models/: Моделі для роботи з базою (наприклад, Parking.js, ParkingSpot.js).
+* middleware/: Middleware для авторизації (restrictTo.js).
+   * db.js: Налаштування підключення до PostgreSQL.
+2.2 Веб-інтерфейс
+Технології: HTML, CSS, JavaScript
+Структура:
+* html/: Статичні файли html файли
+* js/: JavaScript файли.
+* css/: css файли.
+Функціонал: 
+* Динамічне завантаження даних через fetch.
+* Перемикання мови через localStorage і JSON-файли перекладів (locales/en.json, locales/uk.json).
+
+2.3 Мобільний додаток
+Технології: Kotlin (v1.9+), Jetpack Compose, Retrofit, OkHttp
+Структура: 
+   * app/src/main/java/com/example/parkingapp/: Екрани (LoginScreen.kt, DashboardScreen.kt, ParkingSpotsScreen.kt).
+   * app/src/main/res/values/, values-uk/: Ресурси перекладів.
+Функціонал: 
+* MVVM із ViewModel для управління станом.
+* Retrofit для API-запитів.
+* SharedPreferences для збереження даних.
+2.4 IoT-пристрій
+Технології: ESP32, Arduino IDE, HC-SR04, PubSubClient
+Код: iot/iot_code.ino (наданий вами).
+Функціонал: 
+* Вимірювання відстані (<100 см — зайнято).
+* Надсилання статусу через MQTT на parking/status.
+3 Встановлення та запуск
+3.1 Налаштування сервера
+* Завантажте та встановіть Node.js з офіційного сайту.
+* Перевірте: node -v (має бути v18+), npm -v.
+3.2 Налаштування PostgreSQL: 
+* Встановіть PostgreSQL: інструкція.
+* Створіть базу даних: 
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL, -- Зберігає хеш пароля
+    role VARCHAR(20) NOT NULL DEFAULT 'user',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT role_check CHECK (role IN ('user', 'parking_admin', 'super_admin'))
+);
+CREATE TABLE parkings (
+    parking_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    address TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE user_groups (
+    group_id SERIAL PRIMARY KEY,
+    group_name VARCHAR(50) NOT NULL,
+    description TEXT,
+    parking_id INT REFERENCES parkings(parking_id) ON DELETE CASCADE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE user_group_members (
+    user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
+    group_id INT REFERENCES user_groups(group_id) ON DELETE CASCADE,
+    PRIMARY KEY (user_id, group_id)
+);
+CREATE TABLE parking_groups (
+    parking_group_id SERIAL PRIMARY KEY,
+    parking_id INT REFERENCES parkings(parking_id) ON DELETE CASCADE,
+    group_name VARCHAR(50) NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE parking_spots (
+    spot_id SERIAL PRIMARY KEY,
+    parking_group_id INT REFERENCES parking_groups(parking_group_id) ON DELETE CASCADE,
+    spot_number VARCHAR(20) NOT NULL,
+    is_occupied BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE iot_devices (
+    device_id SERIAL PRIMARY KEY,
+    device_uuid VARCHAR(36) UNIQUE NOT NULL, -- Унікальний ідентифікатор пристрою
+    spot_id INT UNIQUE REFERENCES parking_spots(spot_id) ON DELETE SET NULL -- Зв’язок із паркувальним місцем
+);
+CREATE TABLE parking_history (
+    history_id SERIAL PRIMARY KEY,
+    spot_id INT REFERENCES parking_spots(spot_id) ON DELETE CASCADE,
+    device_uuid VARCHAR(36),
+    is_occupied BOOLEAN NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    duration_seconds INT DEFAULT NULL
+);
+CREATE TABLE user_group_parking_group_access (
+    group_id INT REFERENCES user_groups(group_id) ON DELETE CASCADE,
+    parking_group_id INT REFERENCES parking_groups(parking_group_id) ON DELETE CASCADE,
+    PRIMARY KEY (group_id, parking_group_id)
+);
+CREATE TABLE parking_admins (
+    parking_admin_id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(user_id) ON DELETE CASCADE, 
+    parking_id INT REFERENCES parkings(parking_id) ON DELETE CASCADE, 
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (user_id, parking_id)
+);
+3.3 Встановлення залежностей: 
+* npm install express pg jsonwebtoken mqtt.
+3.4 Ініціалізація: npm init -y.
+3.5 Налаштування веб-інтерфейсу
+* Створіть папки html, css, js
+3.6 Налаштування мобільного додатка
+1. Встановлення Android Studio: завантажте з офіційного сайту.
+2. Імпорт проєкту: Відкрийте Android Studio ? "Open an existing project" ? виберіть папку app.
+3. Налаштування Gradle: Перевірте build.gradle (Module) із resConfigs "en" "uk".
+4. Запуск: 
+* Підключіть пристрій або емулятор.
+* Натисніть "Run" у Android Studio.
