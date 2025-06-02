@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="navbar_title">Parking Admin Panel - User Groups</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <div id="app" class="container">
+    <div id="dashboard" class="dashboard">
+      <nav class="navbar navbar-light bg-light mb-4">
+        <span class="navbar-brand mb-0 h1" data-i18n="navbar_title">Адмін-панель паркування</span>
+        <div>
+          <div class="me-3">
+            <span data-i18n="language_label">Мова:</span>
+            <select id="languageSelect" onchange="setLanguage(this.value)">
+              <option value="en">English</option>
+              <option value="uk">Українська</option>
+            </select>
+          </div>
+          <span id="userRole" class="me-3" data-i18n="role_label">Роль:</span>
+          <button id="logoutBtn" class="btn btn-danger" data-i18n="logout">Вийти</button>
+          <button id="backBtn" class="btn btn-secondary ms-2" data-i18n="back_button">Повернутися</button>
+        </div>
+      </nav>
+      <div id="userGroupsDashboard">
+        <h3 class="mb-4" data-i18n="user_groups_title">Керування групами користувачів</h3>
+        <div class="mb-3">
+          <h5 data-i18n="create_group_title">Створити групу</h5>
+          <div class="input-group mb-2">
+            <input type="text" id="groupName" class="form-control" placeholder data-i18n-placeholder="group_name_placeholder">
+            <input type="text" id="groupDescription" class="form-control ms-2" placeholder data-i18n-placeholder="group_description_placeholder">
+            <button id="createGroupBtn" class="btn btn-primary ms-2" data-i18n="create_button">Створити</button>
+          </div>
+        </div>
+        <div id="groupsList"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/i18n.js"></script>
+  <script src="../js/userGroups.js"></script>
+</body>
+</html>

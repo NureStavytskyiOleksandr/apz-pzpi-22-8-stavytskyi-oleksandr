@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="navbar_title">Parking Admin Panel - Manage Users</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <div id="app" class="container">
+    <div id="dashboard" class="dashboard">
+      <nav class="navbar navbar-light bg-light mb-4">
+        <span class="navbar-brand mb-0 h1" data-i18n="navbar_title">Адмін-панель паркування</span>
+        <div>
+          <div class="me-3">
+            <span data-i18n="language_label">Мова:</span>
+            <select id="languageSelect" onchange="setLanguage(this.value)">
+              <option value="en">English</option>
+              <option value="uk">Українська</option>
+            </select>
+          </div>
+          <span id="userRole" class="me-3" data-i18n="role_label">Роль:</span>
+          <button id="logoutBtn" class="btn btn-danger" data-i18n="logout">Вийти</button>
+          <button id="backBtn" class="btn btn-secondary ms-2" data-i18n="back_button">Повернутися</button>
+        </div>
+      </nav>
+      <div id="usersDashboard">
+        <h3 class="mb-4" data-i18n="manage_users_title">Керування користувачами</h3>
+        <button id="addUserBtn" class="btn btn-primary mb-2" data-i18n="add_user_button">Додати користувача</button>
+        <div id="addUserForm" class="mb-3 hidden">
+          <div class="mb-2">
+            <label for="addUsername" class="form-label" data-i18n="username_label">Ім'я користувача</label>
+            <input type="text" class="form-control" id="addUsername" placeholder data-i18n-placeholder="enter_name_placeholder" value="">
+          </div>
+          <div class="mb-2">
+            <label for="addEmail" class="form-label" data-i18n="email_label">Email</label>
+            <input type="email" class="form-control" id="addEmail" placeholder data-i18n-placeholder="enter_name_placeholder" value="">
+          </div>
+          <div class="mb-2">
+            <label for="addPassword" class="form-label" data-i18n="password_label">Пароль</label>
+            <input type="password" class="form-control" id="addPassword" placeholder data-i18n-placeholder="enter_name_placeholder" value="">
+          </div>
+          <div class="mb-2">
+            <label for="addRole" class="form-label" data-i18n="role_label_select">Роль</label>
+            <select id="addRole" class="form-select">
+              <option value="user" data-i18n="user_option">User</option>
+              <option value="parking_admin" data-i18n="parking_admin_option">Parking Admin</option>
+              <option value="super_admin" data-i18n="super_admin_option">Super Admin</option>
+            </select>
+          </div>
+          <button id="submitAddUserBtn" class="btn btn-success" data-i18n="save_button">Зберегти</button>
+          <button id="cancelAddUserBtn" class="btn btn-secondary" data-i18n="cancel_button">Скасувати</button>
+        </div>
+        <ul id="usersList" class="list-group"></ul>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/i18n.js"></script>
+  <script src="../js/users.js"></script>
+</body>
+</html>
