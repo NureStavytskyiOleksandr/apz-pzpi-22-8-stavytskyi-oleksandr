@@ -1,1 +1,214 @@
+МІНІСТЕРСТВО ОСВІТИ І НАУКИ УКРАЇНИ
+ХАРКІВСЬКИЙ НАЦІОНАЛЬНИЙ УНІВЕРСИТЕТ РАДІОЕЛЕКТРОНІКИ
 
+Кафедра «Програмної інженерії»
+
+
+
+
+
+
+ЗВІТ
+З Лабораторної роботи № 4
+з дисципліни
+«Архітектура програмного забезпечення»
+
+
+
+
+
+Виконав
+ст. гр. ПЗПІ-22-8
+Ставицький Олександр
+Перевірив
+ст. викладач каф. ПІ
+Сокорчук І. П.
+
+
+
+
+Харків 2025
+1 ІСТОРІЯ ЗМІН
+
+	У цьому розділі відображено історію внесених змін до звіту, що наведено у табл. 1.
+
+	Таблиця 1 – Історія змін
+№
+Дата
+Версія
+Опис змін
+Автор
+1
+29.05.2025
+0.1
+Створено розділ «Завдання»
+Ставицький Олександр
+2
+29.05.2025
+0.1
+Створено розділ «Опис виконаної роботи»
+Ставицький Олександр
+3
+29.05.2025
+0.1
+Створено розділ «Висновки»
+Ставицький Олександр
+2 ЗАВДАННЯ
+
+	У рамках виконання цієї лабораторної роботи треба було розробити мобільну частину для програмної системи відповідно до обраної теми. Необхідно проаналізувати та описати створені компоненти системи.
+
+3 ОПИС ВИКОНАНОЇ РОБОТИ
+	3.1 Розробка Use Case діаграми
+
+	Під час виконання лабораторної роботи була розроблена Use Case діаграма перецедентів яку можна переглянути в додатку Б. На цій діаграмі ми можемо побачити двох акторів: зареєстрованого користувача та не зареєстрованого користувача. Також на діаграмі зображено дії які можуть виконувати дані актори.
+
+
+	3.1 Розробка діаграми компонентів
+
+	Була розроблена діаграма компонентів яку можна переглянути в додатку Б. На ній ми можемо бачити такі компоненти: реєстрація, авторизація, перегляд доступних парковок та вільних паркомісць.
+
+	3.3 Створення діаграми взаємодії
+
+	Була розроблена діаграма взаємодії яку можна переглянути в додатку Б. На ній ми можемо побачити дії авторизованого користувача мобільної частини програмної системи.
+
+     3.4 Створення діаграми діяльності
+     
+     Під час виконання лабораторної роботи була розроблена діаграма діяльності яку можна переглянути в додатку Б. На ній ми можемо побачити діяльність авторизованого користувача на мобільній частині програмної системи.
+
+     3.5 Створення веб частини програмної системи
+     
+     	Була створена мобільна частина програмної системи. Частину коду можна переглянути в додатку Б. Мобільна частина створена для використання звичайними користувачами програмної частини. Користувачі можуть зареєструватися та авторизуватися. Після цього перед ними відкривається список із доступних для них парковок. При натисканні на парковку відкривається список із вільних місць доступних для користувача.
+     
+     
+     4 ВИСНОВКИ
+
+	Під час виконання цієї лабораторної роботи було розроблено мобільну для програмної системи відповідно до обраної теми. Також були розроблені такі діаграми: Use Case діаграма, діаграма компонентів, діаграма взаємодії, діаграма діяльності.
+
+
+
+
+ДОДАТОК А
+
+	Посилання на відеозапис доповіді та хронологічний опис.
+Відеозапис доповіді на YouTube: https://youtu.be/JPi5OVdWVsY 
+     Хронологічний опис:
+     00:00 - Початок 
+     00:30 - Реєстрація 
+     01:05 - Авторизація 
+     02:13 - Перегляд доступних парковок 
+     02:28 - Перегляд вільних місць 
+     02:39 - Різні групи 
+     03:15 - Зміна мови 
+     03:35 - Кінець
+     
+
+
+ДОДАТОК Б
+
+
+Рисунок Б.1 – Use Case діаграма
+
+
+Рисунок Б.2 – діаграма компонентів
+
+Рисунок Б.3 – діаграма взаємодії
+
+Рисунок Б.4 – діаграма діяльності
+
+
+
+ДОДАТОК В
+Програмний код сторінки авторизації мобільної частини
+
+В.1 Сторінка авторизації
+GitHub репозиторій: 
+
+
+package com.example.parkingapp
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import com.example.parkingapp.api.LoginRequest
+import com.example.parkingapp.api.RetrofitClient
+import kotlinx.coroutines.launch
+
+@Composable
+fun LoginScreen(
+    onLoginSuccess: () -> Unit,
+    onNavigateToRegister: () -> Unit,
+    authManager: AuthManager
+) {
+    val scope = rememberCoroutineScope()
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var errorMessage by remember { mutableStateOf("") }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(text = stringResource(R.string.login), style = MaterialTheme.typography.headlineMedium)
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = email,
+            onValueChange = { email = it },
+            label = { Text(stringResource(R.string.email)) },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+
+        OutlinedTextField(
+            value = password,
+            onValueChange = { password = it },
+            label = { Text(stringResource(R.string.password)) },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        if (errorMessage.isNotEmpty()) {
+            Text(text = errorMessage, color = MaterialTheme.colorScheme.error)
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+
+        Button(
+            onClick = {
+                scope.launch {
+                    try {
+                        val response = RetrofitClient.apiService.login(
+                            LoginRequest(email, password)
+                        )
+                        println("Login response: $response")
+                        if (response.token != null && response.role != null) {
+                            authManager.saveAuth(response.token, response.role)
+                            println("Saved token: ${response.token}, role: ${response.role}, userId: ${authManager.getUserId()}")
+                            onLoginSuccess()
+                        } else {
+                            errorMessage = "Invalid login response: token or role is missing"
+                        }
+                    } catch (e: Exception) {
+                        errorMessage = "Login failed: ${e.message}"
+                        println("Login error: ${e.message}")
+                    }
+                }
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(stringResource(R.string.login))
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        TextButton(onClick = onNavigateToRegister) {
+            Text(stringResource(R.string.dont_have_account))
+        }
+    }
+}
