@@ -121,7 +121,7 @@
 Програмний код сторінки авторизації мобільної частини
 
 В.1 Сторінка авторизації
-GitHub репозиторій: 
+GitHub репозиторій: https://github.com/NureStavytskyiOleksandr/apz-pzpi-22-8-stavytskyi-oleksandr/blob/main/Lab4/pzpi-22-8-stavytskyi-oleksandr-lab4/LoginScreen.kt 
 
 
 package com.example.parkingapp
@@ -212,3 +212,6 @@ fun LoginScreen(
         }
     }
 }
+2
+
+
