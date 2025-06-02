@@ -1,0 +1,15 @@
+body {
+    background-color: #f8f9fa;
+  }
+  
+  .error {
+    color: red;
+  }
+  
+  .success {
+    color: green;
+  }
+  
+  .hidden {
+    display: none;
+  }
