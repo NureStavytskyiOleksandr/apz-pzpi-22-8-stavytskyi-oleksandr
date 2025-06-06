@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Додаток для паркування</string>
+    <string name="login">Увійти</string>
+    <string name="email">Електронна пошта</string>
+    <string name="password">Пароль</string>
+    <string name="dont_have_account">Немає акаунту? Зареєструватися</string>
+    <string name="welcome_to_dashboard">Ласкаво просимо до панелі керування</string>
+    <string name="role">Роль: %s</string>
+    <string name="loading_parkings">Завантаження парковок...</string>
+    <string name="no_parkings_available">Немає доступних парковок</string>
+    <string name="logout">Вийти</string>
+    <string name="refresh">Оновити</string>
+    <string name="available_spots_in">Доступні місця в %s</string>
+    <string name="loading_parking_spots">Завантаження паркувальних місць...</string>
+    <string name="no_available_spots">Немає доступних місць на цій парковці</string>
+    <string name="back_to_dashboard">Повернутися до панелі</string>
+    <string name="register">Зареєструватися</string>
+    <string name="username">Ім\'я користувача</string>
+    <string name="register_for_parking_app">Реєстрація в додатку для паркування</string>
+    <string name="already_have_account">Вже є акаунт? Увійти</string>
+    <string name="spot_number">Номер місця: %s</string>
+    <string name="parking_group_id">ID групи парковомісць: %s</string>
+</resources>
