@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Parking App</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="dont_have_account">Don\'t have an account? Register</string>
+    <string name="welcome_to_dashboard">Welcome to Dashboard</string>
+    <string name="role">Role: %s</string>
+    <string name="loading_parkings">Loading parkings...</string>
+    <string name="no_parkings_available">No parkings available</string>
+    <string name="logout">Logout</string>
+    <string name="refresh">Refresh</string>
+    <string name="available_spots_in">Available Spots in %s</string>
+    <string name="loading_parking_spots">Loading parking spots...</string>
+    <string name="no_available_spots">No available spots in this parking</string>
+    <string name="back_to_dashboard">Back to Dashboard</string>
+    <string name="register">Register</string>
+    <string name="username">Username</string>
+    <string name="register_for_parking_app">Register for Parking App</string>
+    <string name="already_have_account">Already have an account? Login</string>
+    <string name="spot_number">Spot Number: %s</string>
+    <string name="parking_group_id">Parking Group ID: %s</string>
+</resources>
